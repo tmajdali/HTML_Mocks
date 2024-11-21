@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.4/chartist.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.4/chartist.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard-container {
+            margin: 2rem;
+        }
+        .card {
+            margin-bottom: 2rem;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .card-header {
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-bottom: none;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .card-body {
+            position: relative;
+            height: 350px;
+        }
+        .navbar {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Rabet Developer Portal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">API Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Analytics</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container dashboard-container">
+        <h2 class="mb-4">Analytics Dashboard</h2>
+
+        <div class="row">
+            <!-- Total API Calls Line Chart -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-chart-line me-2"></i>Total API Calls Over Time
+                    </div>
+                    <div class="card-body">
+                        <canvas id="totalApiCallsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Most Frequently Used Endpoints Chart -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-sitemap me-2"></i>Most Frequently Used Endpoints
+                    </div>
+                    <div class="card-body">
+                        <canvas id="frequentEndpointsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- API Calls Per Application Stacked Bar Chart -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <i class="fas fa-layer-group me-2"></i>API Calls Per Application
+                    </div>
+                    <div class="card-body">
+                        <canvas id="apiCallsPerAppChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Percentage of Successful API Calls Gauge Chart -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <i class="fas fa-check-circle me-2"></i>Percentage of Successful API Calls
+                    </div>
+                    <div class="card-body">
+                        <canvas id="successRateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Total API Calls Line Chart
+        const totalApiCallsCtx = document.getElementById('totalApiCallsChart').getContext('2d');
+        new Chart(totalApiCallsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Total API Calls',
+                    data: [120, 150, 130, 170],
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Most Frequently Used Endpoints Horizontal Bar Chart
+        const frequentEndpointsCtx = document.getElementById('frequentEndpointsChart').getContext('2d');
+        new Chart(frequentEndpointsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Endpoint 1', 'Endpoint 2', 'Endpoint 3'],
+                datasets: [{
+                    label: 'Number of Calls',
+                    data: [100, 200, 150],
+                    backgroundColor: ['#28a745', '#28a745', '#28a745'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // API Calls Per Application Stacked Bar Chart
+        const apiCallsPerAppCtx = document.getElementById('apiCallsPerAppChart').getContext('2d');
+        new Chart(apiCallsPerAppCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [
+                    {
+                        label: 'App A',
+                        data: [50, 30, 40, 60],
+                        backgroundColor: '#dc3545'
+                    },
+                    {
+                        label: 'App B',
+                        data: [30, 50, 30, 40],
+                        backgroundColor: '#ffc107'
+                    },
+                    {
+                        label: 'App C',
+                        data: [40, 70, 60, 70],
+                        backgroundColor: '#007bff'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Percentage of Successful API Calls Gauge Chart
+        const successRateCtx = document.getElementById('successRateChart').getContext('2d');
+        new Chart(successRateCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Successful Calls', 'Failed Calls'],
+                datasets: [{
+                    label: 'Success Rate',
+                    data: [85, 15],
+                    backgroundColor: ['#28a745', '#dc3545'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
